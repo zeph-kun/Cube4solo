@@ -1,21 +1,18 @@
 //using Cube_4.models;
+
+using Cube4solo.models;
+using Cube4solo.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cube_4.Datas
+namespace Cube4solo.Datas
 {
     public class ApplicationDbContext : DbContext
     {
-        /* public DbSet<User> Users { get; set; }
-        public DbSet<Article> Articles { get; set; }
-        
-        public DbSet<Commande> Commandes { get; set; }
+         public DbSet<Users> Users { get; set; }
+         public DbSet<Sites> Sites { get; set; }
+         public DbSet<Services> Services { get; set; }
 
-        public DbSet<Fournisseur> Fournisseurs { get; set; }
-        public DbSet<Famille> Familles { get; set; }
-        public DbSet<Stock> Stocks { get; set; }*/
-       
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         
         }

@@ -1,4 +1,4 @@
-using Cube_4.Datas;
+using Cube4solo.Datas;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

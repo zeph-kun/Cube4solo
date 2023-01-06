@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cube4solo", "Cube4solo.csproj", "{BBD96C5F-1B82-475D-908E-98821DA0A5BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBD96C5F-1B82-475D-908E-98821DA0A5BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD96C5F-1B82-475D-908E-98821DA0A5BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD96C5F-1B82-475D-908E-98821DA0A5BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD96C5F-1B82-475D-908E-98821DA0A5BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

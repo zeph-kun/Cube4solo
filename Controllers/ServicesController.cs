@@ -1,3 +1,4 @@
+using System.ServiceProcess;
 using Cube4solo.Datas;
 using Cube4solo.models;
 using Cube4solo.Models;
@@ -7,45 +8,43 @@ using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Cube4solo.Controllers
 {
-    // [Route("api/[controller]")]
-    // [ApiController]
-    public class SitesController : ControllerBase
+    public class ServicesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public SitesController(ApplicationDbContext context)
+        public ServicesController(ApplicationDbContext context)
         {
             this._context = context;
         }
 
-        [HttpGet("sites")]
-        public IActionResult GetSites()
+        [HttpGet("services")]
+        public IActionResult GetServices()
         {
-            List<Sites> mySites = _context.Sites.ToList();
+            List<Services> myService = _context.Services.ToList();
 
-            if (mySites.Count > 0)
+            if (myService.Count > 0)
             {
                 return Ok(new
                 {
-                    Message = "Voici vos Sites !",
-                    Sites = mySites
+                    Message = "Voici vos services !",
+                    Services = myService
                 });
             }
             else
             {
                 return NotFound(new
                 {
-                    Message = "Aucun sites dans la base de donnée"
+                    Message = "Aucun service dans la base de donnée"
                 });
             }
         }
 
-        [HttpGet("sites/{siteId}")]
-        public IActionResult GetSiteById(int siteId)
+        [HttpGet("services/{serviceId}")]
+        public IActionResult GetServiceById(int serviceId)
         {
-            Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == siteId);
+            Services? findService = _context.Services.FirstOrDefault(x => x.Id == serviceId);
 
-            if (findSites == null)
+            if (findService == null)
             {
                 return NotFound(new
                 {
@@ -57,26 +56,26 @@ namespace Cube4solo.Controllers
                 return Ok(new
                 {
                     Message = "Site trouvé",
-                    Sites = new SitesDTO() { City = findSites.City }
+                    Sites = new ServicesDTO() { Name = findService.Name }
                 });
             }
         }
 
-        [HttpPatch("sites")]
-        public IActionResult EditSite(SitesDTO newInfos)
+        [HttpPatch("services")]
+        public IActionResult EditService(ServicesDTO newInfos)
         {
-            Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == newInfos.Id);
-            
-            if (findSites != null)
-            {
-                findSites.City = newInfos.City;
+            Services? findService = _context.Services.FirstOrDefault(x => x.Id == newInfos.Id);
 
-                _context.Sites.Update(findSites);
+            if (findService != null)
+            {
+                findService.Name = newInfos.Name;
+
+                _context.Services.Update(findService);
                 if (_context.SaveChanges() > 0)
                 {
                     return Ok(new
                     {
-                        Message = "Le sites a bien été modifié !"
+                        Message = "Le service a bien été modifié !"
                     });
                 }
                 else
@@ -96,20 +95,20 @@ namespace Cube4solo.Controllers
             }
         }
 
-        [HttpPost("sites")]
-        public IActionResult AddSites(SitesDTO newSites)
+        [HttpPost("services")]
+        public IActionResult AddService(ServicesDTO newService)
         {
-            Sites addSite = new Sites()
+            Services addService = new Services()
             {
-                City = newSites.City
+                Name = newService.Name
             };
-            _context.Sites.Add(addSite);
+            _context.Services.Add(addService);
             if (_context.SaveChanges() > 0)
             {
                 return Ok(new
                 {
-                    Message = "Le sites a été ajouté",
-                    SiteId = addSite.Id
+                    Message = "Le service a été ajouté",
+                    ServiceId = addService.Id
                 });
             }
             else
@@ -121,26 +120,26 @@ namespace Cube4solo.Controllers
             }
         }
 
-        [HttpDelete("sites/{siteId}")]
-        public IActionResult DeleteSite(int siteId)
+        [HttpDelete("services/{serviceId}")]
+        public IActionResult DeleteService(int serviceId)
         {
-            Sites? findSite = _context.Sites.FirstOrDefault(x => x.Id == siteId);
+            Services? findService = _context.Services.FirstOrDefault(x => x.Id == serviceId);
 
-            if (findSite == null)
+            if (findService == null)
             {
                 return NotFound(new
                 {
-                    Message = "Aucun site trouvé"
+                    Message = "Aucun service trouvé"
                 });
             }
             else
             {
-                _context.Sites.Remove(findSite);
+                _context.Services.Remove(findService);
                 if (_context.SaveChanges() > 0)
                 {
                     return Ok(new
                     {
-                        Message = "Le site a été supprimé"
+                        Message = "Le service a été supprimé"
                     });
                 }
                 else
@@ -152,6 +151,5 @@ namespace Cube4solo.Controllers
                 }
             }
         }
-    }   
+    }
 }
-

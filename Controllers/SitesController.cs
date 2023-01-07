@@ -1,15 +1,13 @@
 using Cube4solo.Datas;
-using Cube4solo.models;
 using Cube4solo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Cube4solo.Controllers
 {
     // [Route("api/[controller]")]
     // [ApiController]
-    public class SitesController : ControllerBase
+    public class SitesController : Controller
     {
         private readonly ApplicationDbContext _context;
 

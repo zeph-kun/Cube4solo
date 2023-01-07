@@ -1,14 +1,13 @@
 using System.ServiceProcess;
 using Cube4solo.Datas;
-using Cube4solo.models;
 using Cube4solo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cube4solo.Controllers
 {
-    public class ServicesController : ControllerBase
+    public class ServicesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -16,6 +15,18 @@ namespace Cube4solo.Controllers
         {
             this._context = context;
         }
+        
+        public IActionResult Index()
+        {
+            List<Services> list = _context.Services.ToList();
+            return View();
+        }
+        
+        // public IActionResult Edit(int id)
+        // {
+        //     Services Service = GetServiceById(id);
+        //     return View(Service);
+        // }
 
         [HttpGet("services")]
         public IActionResult GetServices()

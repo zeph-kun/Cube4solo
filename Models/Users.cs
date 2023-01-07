@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Cube4solo.Models;
 
-namespace Cube4solo.models
+namespace Cube4solo.Models
 {
     public class Users
     {

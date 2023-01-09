@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cube4solo.Migrations
 {
-    public partial class Sites : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "Services",
                 columns: table => new
@@ -51,7 +54,7 @@ namespace Cube4solo.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(48)", maxLength: 48, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false)
+                    Password = table.Column<string>(type: "varchar(48)", maxLength: 48, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cellphone = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),

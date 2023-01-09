@@ -1,4 +1,5 @@
 using Cube4solo.Datas;
+using Cube4solo.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

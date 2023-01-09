@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cube4solo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230106212447_Users")]
-    partial class Users
+    [Migration("20230109154942_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace Cube4solo.Migrations
                     b.ToTable("Sites");
                 });
 
-            modelBuilder.Entity("Cube4solo.models.Users", b =>
+            modelBuilder.Entity("Cube4solo.Models.Users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,6 +86,11 @@ namespace Cube4solo.Migrations
                         .HasMaxLength(48)
                         .HasColumnType("varchar(48)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(48)
+                        .HasColumnType("varchar(48)");
+
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
@@ -101,7 +106,7 @@ namespace Cube4solo.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Cube4solo.models.Users", b =>
+            modelBuilder.Entity("Cube4solo.Models.Users", b =>
                 {
                     b.HasOne("Cube4solo.Models.Services", "Services")
                         .WithMany()

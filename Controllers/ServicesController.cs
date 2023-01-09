@@ -41,8 +41,6 @@ namespace Cube4solo.Controllers
         {
             return View();
         }
-        
-        
 
         [HttpGet("Services")]
         public IActionResult GetServices()
@@ -53,18 +51,10 @@ namespace Cube4solo.Controllers
             {
                 List<Services> list = _context.Services.ToList();
                 return View("Index", list);
-                // return Ok(new
-                // {
-                //     Message = "Voici vos services !",
-                //     Services = myService
-                // });
             }
             else
             {
-                return NotFound(new
-                {
-                    Message = "Aucun service dans la base de donnée"
-                });
+                return View("Create");
             }
         }
 
@@ -72,21 +62,6 @@ namespace Cube4solo.Controllers
         public Services GetServiceById(int serviceId)
         {
             return _context.Services.FirstOrDefault(x => x.Id == serviceId);
-
-            // if (findService == null)
-            // {
-            //     return NotFound(new
-            //     {
-            //         Message = "Aucun site trouvé"
-            //     });
-            // }
-            // else
-            // {
-            //     return Ok(new
-            //     {
-            //         Message = "Site trouvé",
-            //         Sites = new ServicesDTO() { Name = findService.Name }
-            //     });
         }
 
         [HttpPost("Services/edit")]
@@ -103,10 +78,6 @@ namespace Cube4solo.Controllers
                 {
                     List<Services> Services = _context.Services.ToList();
                     return View("Index", Services);
-                    // return Ok(new
-                    // {
-                    //     Message = "Le service a bien été modifié !"
-                    // });
                 }
                 else
                 {
@@ -137,11 +108,6 @@ namespace Cube4solo.Controllers
             {
                 List<Services> list = _context.Services.ToList();
                 return View("Index", list);
-                // return Ok(new
-                // {
-                //     Message = "Le service a été ajouté",
-                //     ServiceId = addService.Id
-                // });
             }
             else
             {
@@ -151,8 +117,7 @@ namespace Cube4solo.Controllers
                 });
             }
         }
-
-        //[HttpDelete("Services/{serviceId}")]
+        
         public IActionResult DeleteService(int id)
         {
             Services? findService = _context.Services.FirstOrDefault(x => x.Id == id);

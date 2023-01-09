@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" id="table_id">
     <thead>
     <tr>
         <th>
@@ -27,18 +27,18 @@
         <th>
             @Html.DisplayNameFor(model => model.Cellphone)
         </th>
-        @* <th> *@
-        @*     @Html.DisplayNameFor(model => model.LandlinePhone) *@
-        @* </th> *@
+        <th>
+            @Html.DisplayNameFor(model => model.LandlinePhone)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Services)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Sites)
         </th>
-        @* <th> *@
-        @*     @Html.DisplayNameFor(model => model.IsAdmin) *@
-        @* </th> *@
+        <th>
+            @Html.DisplayNameFor(model => model.IsAdmin)
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -60,18 +60,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Cellphone)
             </td>
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.LandlinePhone) *@
-            @* </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.LandlinePhone)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Services.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Sites.City)
             </td>
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.IsAdmin) *@
-            @* </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAdmin)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>

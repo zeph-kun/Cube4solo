@@ -2,6 +2,7 @@ using System.Drawing;
 using System.ServiceProcess;
 using Cube4solo.Datas;
 using Cube4solo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,11 +19,97 @@ namespace Cube4solo.Controllers
             _context = context;
         }
         
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+        
+         [HttpGet("Register")]
+         public IActionResult Register()
+         {           
+             ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+             ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
+             return View();
+         }
+        
+         [HttpPost("Register")]
+         //[ValidateAntiForgeryToken]
+         public IActionResult Register(UsersDTO newUser)
+         {
+             byte[] passwordHash, passwordSalt;
+             CreatePasswordHash(newUser.Password, out passwordHash, out passwordSalt);
+             Users user = new Users
+             { 
+                 Firstname = newUser.Firstname,
+                 Lastname = newUser.Lastname,
+                 Email = newUser.Email,
+                 Cellphone = newUser.Cellphone,
+                 LandlinePhone = newUser.LandlinePhone,
+                 Services = newUser.Services,
+                 Sites = newUser.Sites,
+                 Password = newUser.Password,
+                 IsAdmin = newUser.IsAdmin
+             };
+             Services? findService = _context.Services.FirstOrDefault(x => x.Id == newUser.Services.Id);
+        
+             if (findService == null)
+             {
+                 return NotFound(new
+                 {
+                     Message = "Aucun service trouvé avec cet Id"
+                 });
+             }
+             else
+             {
+                 user.Services = findService;
+             }
+             Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == newUser.Sites.Id);
+        
+             if (findSites == null)
+             {
+                 return NotFound(new
+                 {
+                     Message = "Aucun site trouvé avec cet Id"
+                 });
+             }
+             else
+             {
+                 user.Sites = findSites;
+             }
+             _context.Users.Add(user); 
+             _context.SaveChanges(); 
+             return RedirectToAction("Index", "Users");
+         }
+        
+        [HttpGet("Login")]
+         public IActionResult Login()
+         {
+             return View();
+         }
+
+         [HttpPost("Login")]
+         [ValidateAntiForgeryToken]
+         public IActionResult Login(Users userDto)
+         {
+             if (ModelState.IsValid)
+             {
+                 Users user = _context.Users.FirstOrDefault(u => u.Email == userDto.Email && u.Password == userDto.Password && u.IsAdmin == userDto.IsAdmin);
+                 if (user != null) 
+                 { 
+                     return RedirectToAction("Index", "Users");
+                 }
+             }
+             return View();
+         }
+        
+        [Authorize]
         public IActionResult Index()
         {
             List<Users> list = _context.Users.Include(x => x.Services).Include(x => x.Sites).ToList();
-            // ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
-            // ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
             return View(list);
         }
         
@@ -50,7 +137,6 @@ namespace Cube4solo.Controllers
             return View(Users);
         }
         
-        //[HttpGet("users")]
         public IActionResult GetUsers()
         {
             List<Users> myUsers = _context.Users.ToList();
@@ -59,12 +145,6 @@ namespace Cube4solo.Controllers
             {
                 List<Users> list = _context.Users.ToList();
                 return View("Index", list);
-                // return Ok(new
-                // {
-                //     Message = "Voici vos Users:",
-                //     Article = myUsers
-                // });
-
             } else
             {
                 return NotFound(new
@@ -78,22 +158,7 @@ namespace Cube4solo.Controllers
         public Users GetUserById(int userId)
         {
             return _context.Users.FirstOrDefault(x => x.Id == userId);
-
-            // if (findUser == null)
-            // {
-            //     return NotFound(new
-            //     {
-            //         Message = "Aucun user trouvé avec cet ID !"
-            //     });
-            // } else
-            // {
-            //     return Ok(new
-            //     {
-            //         Message = "User trouvé !",
-            //         Article = new UsersDTO() { Firstname = findUser.Firstname, Lastname = findUser.Lastname, Email = findUser.Email, Cellphone = findUser.Cellphone, LandlinePhone = findUser.LandlinePhone, Services = findUser.Services, Sites = findUser.Sites, IsAdmin = findUser.IsAdmin}
-            //     });
-        //}
-    }
+        }
         
         [HttpPost("users")]
         public IActionResult AddUser(UsersDTO newUser)
@@ -212,7 +277,6 @@ namespace Cube4solo.Controllers
             }
         }
         
-        //[HttpDelete("users/{userId}")]
         public IActionResult DeleteUser(int id)
         {
             Users? findUser = _context.Users.FirstOrDefault(x => x.Id == id);

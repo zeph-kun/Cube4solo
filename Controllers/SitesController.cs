@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace Cube4solo.Controllers
 {
-    // [Route("api/[controller]")]
-    // [ApiController]
     public class SitesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,18 +48,10 @@ namespace Cube4solo.Controllers
             {
                 List<Sites> list = _context.Sites.ToList();
                 return View("Index", list);
-                // return Ok(new
-                // {
-                //     Message = "Voici vos Sites !",
-                //     Sites = mySites
-                // });
             }
             else
             {
-                return NotFound(new
-                {
-                    Message = "Aucun sites dans la base de donnée"
-                });
+                return View("Create");
             }
         }
 
@@ -69,22 +59,6 @@ namespace Cube4solo.Controllers
         public Sites GetSiteById(int siteId)
         {
             return _context.Sites.FirstOrDefault(x => x.Id == siteId);
-
-            // if (findSites == null)
-            // {
-            //     return NotFound(new
-            //     {
-            //         Message = "Aucun site trouvé"
-            //     });
-            // }
-            // else
-            // {
-            //     return Ok(new
-            //     {
-            //         Message = "Site trouvé",
-            //         Sites = new SitesDTO() { City = findSites.City }
-            //     });
-            // }
         }
 
         [HttpPost("sites/edit")]

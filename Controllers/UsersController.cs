@@ -4,6 +4,8 @@ using Cube4solo.Datas;
 using Cube4solo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cube4solo.Controllers
 {
@@ -13,21 +15,55 @@ namespace Cube4solo.Controllers
 
         public UsersController(ApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
         
-        [HttpGet("users")]
+        public IActionResult Index()
+        {
+            List<Users> list = _context.Users.Include(x => x.Services).Include(x => x.Sites).ToList();
+            // ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+            // ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
+            return View(list);
+        }
+        
+        public IActionResult Edit(int id)
+        {
+            Users Users = GetUserById(id);
+            ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+            ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
+            return View(Users);
+        }
+
+        [HttpGet("Users/add")]
+        public IActionResult Create()
+        {
+            ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+            ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
+            return View();
+        }
+        
+        public IActionResult Details(int id)
+        {
+            Users Users = GetUserById(id);
+            ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+            ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
+            return View(Users);
+        }
+        
+        //[HttpGet("users")]
         public IActionResult GetUsers()
         {
             List<Users> myUsers = _context.Users.ToList();
             
             if (myUsers.Count > 0)
             {
-                return Ok(new
-                {
-                    Message = "Voici vos Users:",
-                    Article = myUsers
-                });
+                List<Users> list = _context.Users.ToList();
+                return View("Index", list);
+                // return Ok(new
+                // {
+                //     Message = "Voici vos Users:",
+                //     Article = myUsers
+                // });
 
             } else
             {
@@ -37,27 +73,27 @@ namespace Cube4solo.Controllers
                 });
             }
         }
-        
-        [HttpGet("users/{userId}")] 
-        public IActionResult GetUserById(int userId)
-        {
-            Users? findUser = _context.Users.FirstOrDefault(x => x.Id == userId);
 
-            if (findUser == null)
-            {
-                return NotFound(new
-                {
-                    Message = "Aucun user trouvé avec cet ID !"
-                });
-            } else
-            {
-                return Ok(new
-                {
-                    Message = "User trouvé !",
-                    Article = new UsersDTO() { Firstname = findUser.Firstname, Lastname = findUser.Lastname, Email = findUser.Email, Cellphone = findUser.Cellphone, LandlinePhone = findUser.LandlinePhone, Services = findUser.Services, Sites = findUser.Sites, IsAdmin = findUser.IsAdmin}
-                });
-            }
-        }
+        [HttpGet("users/{userId}")]
+        public Users GetUserById(int userId)
+        {
+            return _context.Users.FirstOrDefault(x => x.Id == userId);
+
+            // if (findUser == null)
+            // {
+            //     return NotFound(new
+            //     {
+            //         Message = "Aucun user trouvé avec cet ID !"
+            //     });
+            // } else
+            // {
+            //     return Ok(new
+            //     {
+            //         Message = "User trouvé !",
+            //         Article = new UsersDTO() { Firstname = findUser.Firstname, Lastname = findUser.Lastname, Email = findUser.Email, Cellphone = findUser.Cellphone, LandlinePhone = findUser.LandlinePhone, Services = findUser.Services, Sites = findUser.Sites, IsAdmin = findUser.IsAdmin}
+            //     });
+        //}
+    }
         
         [HttpPost("users")]
         public IActionResult AddUser(UsersDTO newUser)
@@ -98,10 +134,8 @@ namespace Cube4solo.Controllers
             _context.Users.Add(addUser);
             if (_context.SaveChanges() > 0)
             {
-                return Ok(new
-                {
-                    Message = "Service ajouté"
-                });
+                List<Users> list = _context.Users.ToList();
+                return View("Index", list);
             }
             else
             {
@@ -158,10 +192,8 @@ namespace Cube4solo.Controllers
                 _context.Users.Update(findUser);
                 if (_context.SaveChanges() > 0)
                 {
-                    return Ok(new
-                    {
-                        Message = "User modifié"
-                    });
+                    List<Users> list = _context.Users.ToList();
+                    return View("Index", list);
                 }
                 else
                 {
@@ -180,27 +212,23 @@ namespace Cube4solo.Controllers
             }
         }
         
-        [HttpDelete("users/{userId}")]
-        public IActionResult DeleteUser(int userId)
+        //[HttpDelete("users/{userId}")]
+        public IActionResult DeleteUser(int id)
         {
-            Users? findUser = _context.Users.FirstOrDefault(x => x.Id == userId);
+            Users? findUser = _context.Users.FirstOrDefault(x => x.Id == id);
 
             if (findUser == null)
             {
-                return NotFound(new
-                {
-                    Message = "Aucun User trouvé avec cet ID !"
-                });
+                List<Users> list = _context.Users.ToList();
+                return View("Index", list);
             }
             else
             {
                 _context.Users.Remove(findUser);
                 if (_context.SaveChanges() > 0)
                 {
-                    return Ok(new
-                    {
-                        Message = "L'utilisateur a bien été supprimé",
-                    });
+                    List<Users> list = _context.Users.ToList();
+                    return View("Index", list);
                 } else
                 {
                     return BadRequest(new

@@ -13,7 +13,32 @@ namespace Cube4solo.Controllers
 
         public SitesController(ApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
+        }
+        
+        public IActionResult Index()
+        {
+            List<Sites> list = _context.Sites.ToList();
+            Response.ContentType = "text/html";
+            return View(list);
+        }
+        
+        public IActionResult Details(int id)
+        {
+            Sites Sites = GetSiteById(id);
+            return View(Sites);
+        }
+
+        [HttpGet("sites/add")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
+        public IActionResult Edit(int id)
+        {
+            Sites Sites = GetSiteById(id);
+            return View(Sites);
         }
 
         [HttpGet("sites")]
@@ -23,11 +48,13 @@ namespace Cube4solo.Controllers
 
             if (mySites.Count > 0)
             {
-                return Ok(new
-                {
-                    Message = "Voici vos Sites !",
-                    Sites = mySites
-                });
+                List<Sites> list = _context.Sites.ToList();
+                return View("Index", list);
+                // return Ok(new
+                // {
+                //     Message = "Voici vos Sites !",
+                //     Sites = mySites
+                // });
             }
             else
             {
@@ -39,28 +66,28 @@ namespace Cube4solo.Controllers
         }
 
         [HttpGet("sites/{siteId}")]
-        public IActionResult GetSiteById(int siteId)
+        public Sites GetSiteById(int siteId)
         {
-            Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == siteId);
+            return _context.Sites.FirstOrDefault(x => x.Id == siteId);
 
-            if (findSites == null)
-            {
-                return NotFound(new
-                {
-                    Message = "Aucun site trouvé"
-                });
-            }
-            else
-            {
-                return Ok(new
-                {
-                    Message = "Site trouvé",
-                    Sites = new SitesDTO() { City = findSites.City }
-                });
-            }
+            // if (findSites == null)
+            // {
+            //     return NotFound(new
+            //     {
+            //         Message = "Aucun site trouvé"
+            //     });
+            // }
+            // else
+            // {
+            //     return Ok(new
+            //     {
+            //         Message = "Site trouvé",
+            //         Sites = new SitesDTO() { City = findSites.City }
+            //     });
+            // }
         }
 
-        [HttpPatch("sites")]
+        [HttpPost("sites/edit")]
         public IActionResult EditSite(SitesDTO newInfos)
         {
             Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == newInfos.Id);
@@ -72,10 +99,8 @@ namespace Cube4solo.Controllers
                 _context.Sites.Update(findSites);
                 if (_context.SaveChanges() > 0)
                 {
-                    return Ok(new
-                    {
-                        Message = "Le sites a bien été modifié !"
-                    });
+                    List<Sites> list = _context.Sites.ToList();
+                    return View("Index", list);
                 }
                 else
                 {
@@ -104,11 +129,8 @@ namespace Cube4solo.Controllers
             _context.Sites.Add(addSite);
             if (_context.SaveChanges() > 0)
             {
-                return Ok(new
-                {
-                    Message = "Le sites a été ajouté",
-                    SiteId = addSite.Id
-                });
+                List<Sites> list = _context.Sites.ToList();
+                return View("Index", list);
             }
             else
             {
@@ -119,10 +141,9 @@ namespace Cube4solo.Controllers
             }
         }
 
-        [HttpDelete("sites/{siteId}")]
-        public IActionResult DeleteSite(int siteId)
+        public IActionResult DeleteSite(int id)
         {
-            Sites? findSite = _context.Sites.FirstOrDefault(x => x.Id == siteId);
+            Sites? findSite = _context.Sites.FirstOrDefault(x => x.Id == id);
 
             if (findSite == null)
             {
@@ -136,10 +157,8 @@ namespace Cube4solo.Controllers
                 _context.Sites.Remove(findSite);
                 if (_context.SaveChanges() > 0)
                 {
-                    return Ok(new
-                    {
-                        Message = "Le site a été supprimé"
-                    });
+                    List<Sites> list = _context.Sites.ToList();
+                    return View("Index", list);
                 }
                 else
                 {

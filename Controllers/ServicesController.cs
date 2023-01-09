@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.ServiceProcess;
 using Cube4solo.Datas;
 using Cube4solo.Models;
@@ -13,33 +14,50 @@ namespace Cube4solo.Controllers
 
         public ServicesController(ApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
         
         public IActionResult Index()
         {
             List<Services> list = _context.Services.ToList();
+            Response.ContentType = "text/html";
+            return View(list);
+        }
+        
+        public IActionResult Edit(int id)
+        {
+            Services Services = GetServiceById(id);
+            return View(Services);
+        }
+
+        public IActionResult Details(int id)
+        {
+            Services Services = GetServiceById(id);
+            return View(Services);
+        }
+
+        [HttpGet("Services/add")]
+        public IActionResult Create()
+        {
             return View();
         }
         
-        // public IActionResult Edit(int id)
-        // {
-        //     Services Service = GetServiceById(id);
-        //     return View(Service);
-        // }
+        
 
-        [HttpGet("services")]
+        [HttpGet("Services")]
         public IActionResult GetServices()
         {
             List<Services> myService = _context.Services.ToList();
 
             if (myService.Count > 0)
             {
-                return Ok(new
-                {
-                    Message = "Voici vos services !",
-                    Services = myService
-                });
+                List<Services> list = _context.Services.ToList();
+                return View("Index", list);
+                // return Ok(new
+                // {
+                //     Message = "Voici vos services !",
+                //     Services = myService
+                // });
             }
             else
             {
@@ -50,29 +68,28 @@ namespace Cube4solo.Controllers
             }
         }
 
-        [HttpGet("services/{serviceId}")]
-        public IActionResult GetServiceById(int serviceId)
+        [HttpGet("Services/{serviceId}")]
+        public Services GetServiceById(int serviceId)
         {
-            Services? findService = _context.Services.FirstOrDefault(x => x.Id == serviceId);
+            return _context.Services.FirstOrDefault(x => x.Id == serviceId);
 
-            if (findService == null)
-            {
-                return NotFound(new
-                {
-                    Message = "Aucun site trouvé"
-                });
-            }
-            else
-            {
-                return Ok(new
-                {
-                    Message = "Site trouvé",
-                    Sites = new ServicesDTO() { Name = findService.Name }
-                });
-            }
+            // if (findService == null)
+            // {
+            //     return NotFound(new
+            //     {
+            //         Message = "Aucun site trouvé"
+            //     });
+            // }
+            // else
+            // {
+            //     return Ok(new
+            //     {
+            //         Message = "Site trouvé",
+            //         Sites = new ServicesDTO() { Name = findService.Name }
+            //     });
         }
 
-        [HttpPatch("services")]
+        [HttpPost("Services/edit")]
         public IActionResult EditService(ServicesDTO newInfos)
         {
             Services? findService = _context.Services.FirstOrDefault(x => x.Id == newInfos.Id);
@@ -84,10 +101,12 @@ namespace Cube4solo.Controllers
                 _context.Services.Update(findService);
                 if (_context.SaveChanges() > 0)
                 {
-                    return Ok(new
-                    {
-                        Message = "Le service a bien été modifié !"
-                    });
+                    List<Services> Services = _context.Services.ToList();
+                    return View("Index", Services);
+                    // return Ok(new
+                    // {
+                    //     Message = "Le service a bien été modifié !"
+                    // });
                 }
                 else
                 {
@@ -106,7 +125,7 @@ namespace Cube4solo.Controllers
             }
         }
 
-        [HttpPost("services")]
+        [HttpPost("Services/add")]
         public IActionResult AddService(ServicesDTO newService)
         {
             Services addService = new Services()
@@ -116,11 +135,13 @@ namespace Cube4solo.Controllers
             _context.Services.Add(addService);
             if (_context.SaveChanges() > 0)
             {
-                return Ok(new
-                {
-                    Message = "Le service a été ajouté",
-                    ServiceId = addService.Id
-                });
+                List<Services> list = _context.Services.ToList();
+                return View("Index", list);
+                // return Ok(new
+                // {
+                //     Message = "Le service a été ajouté",
+                //     ServiceId = addService.Id
+                // });
             }
             else
             {
@@ -131,10 +152,10 @@ namespace Cube4solo.Controllers
             }
         }
 
-        [HttpDelete("services/{serviceId}")]
-        public IActionResult DeleteService(int serviceId)
+        //[HttpDelete("Services/{serviceId}")]
+        public IActionResult DeleteService(int id)
         {
-            Services? findService = _context.Services.FirstOrDefault(x => x.Id == serviceId);
+            Services? findService = _context.Services.FirstOrDefault(x => x.Id == id);
 
             if (findService == null)
             {
@@ -148,10 +169,8 @@ namespace Cube4solo.Controllers
                 _context.Services.Remove(findService);
                 if (_context.SaveChanges() > 0)
                 {
-                    return Ok(new
-                    {
-                        Message = "Le service a été supprimé"
-                    });
+                    List<Services> list = _context.Services.ToList();
+                    return View("Index", list);
                 }
                 else
                 {

@@ -10,8 +10,6 @@ namespace Cube4solo.Models
         [StringLength(48)] public string Lastname { get; set; } = "";
         [StringLength(48)] public string Email { get; set; } = "";
         
-        [StringLength(48)] public string Password { get; set; } = "";
-
         [StringLength(32)] public string Cellphone { get; set; } = "";
         [StringLength(32)] public string LandlinePhone { get; set; } = "";
         

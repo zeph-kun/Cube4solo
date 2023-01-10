@@ -1,70 +1,70 @@
-@model Cube4solo.Models.Users;
-
-@{
-    ViewData["Title"] = "Edit";
-}
-
-<h1>Edit</h1>
-
-<h4>Users</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Firstname" class="control-label"></label>
-                <input asp-for="Firstname" class="form-control" />
-                <span asp-validation-for="Firstname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Lastname" class="control-label"></label>
-                <input asp-for="Lastname" class="form-control" />
-                <span asp-validation-for="Lastname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" type="password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cellphone" class="control-label"></label>
-                <input asp-for="Cellphone" class="form-control" />
-                <span asp-validation-for="Cellphone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LandlinePhone" class="control-label"></label>
-                <input asp-for="LandlinePhone" class="form-control" />
-                <span asp-validation-for="LandlinePhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Services" class="control-label"></label>
-                <select asp-for="Services.Id" class="form-control" asp-items="@ViewBag.Services"></select>
-                <span asp-validation-for="Services" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sites" class="control-label"></label>
-                <select asp-for="Sites.Id" class="form-control" asp-items="@ViewBag.Sites"></select>
-                <span asp-validation-for="Sites" class="text-danger"></span>
-            </div>
-            <div class="form-check">
-                <label asp-for="IsAdmin" class="form-check-label"></label>
-                <input asp-for="IsAdmin" class="form-check-input" />
-                <span asp-validation-for="IsAdmin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@* @model Cube4solo.Models.Users; *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "Edit"; *@
+@* } *@
+@* *@
+@* <h1>Edit</h1> *@
+@* *@
+@* <h4>Users</h4> *@
+@* <hr /> *@
+@* <div class="row"> *@
+@*     <div class="col-md-4"> *@
+@*         <form asp-action=""> *@
+@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*             <input type="hidden" asp-for="Id" /> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Firstname" class="control-label"></label> *@
+@*                 <input asp-for="Firstname" class="form-control" /> *@
+@*                 <span asp-validation-for="Firstname" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Lastname" class="control-label"></label> *@
+@*                 <input asp-for="Lastname" class="form-control" /> *@
+@*                 <span asp-validation-for="Lastname" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Email" class="control-label"></label> *@
+@*                 <input asp-for="Email" class="form-control" /> *@
+@*                 <span asp-validation-for="Email" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="" class="control-label"></label> *@
+@*                 <input asp-for="" class="form-control" type="password" /> *@
+@*                 <span asp-validation-for="" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Cellphone" class="control-label"></label> *@
+@*                 <input asp-for="Cellphone" class="form-control" /> *@
+@*                 <span asp-validation-for="Cellphone" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="LandlinePhone" class="control-label"></label> *@
+@*                 <input asp-for="LandlinePhone" class="form-control" /> *@
+@*                 <span asp-validation-for="LandlinePhone" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Services" class="control-label"></label> *@
+@*                 <select asp-for="Services.Id" class="form-control" asp-items="@ViewBag.Services"></select> *@
+@*                 <span asp-validation-for="Services" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Sites" class="control-label"></label> *@
+@*                 <select asp-for="Sites.Id" class="form-control" asp-items="@ViewBag.Sites"></select> *@
+@*                 <span asp-validation-for="Sites" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-check"> *@
+@*                 <label asp-for="IsAdmin" class="form-check-label"></label> *@
+@*                 <input asp-for="IsAdmin" class="form-check-input" /> *@
+@*                 <span asp-validation-for="IsAdmin" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <input type="submit" value="Save" class="btn btn-primary" /> *@
+@*             </div> *@
+@*         </form> *@
+@*     </div> *@
+@* </div> *@
+@* *@
+@* @section Scripts { *@
+@*     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+@* } *@

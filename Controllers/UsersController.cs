@@ -19,97 +19,97 @@ namespace Cube4solo.Controllers
             _context = context;
         }
         
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
+        // private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        // {
+        //     using (var hmac = new System.Security.Cryptography.HMACSHA512())
+        //     {
+        //         passwordSalt = hmac.Key;
+        //         passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        //     }
+        // }
         
-         [HttpGet("Register")]
-         public IActionResult Register()
-         {           
-             ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
-             ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
-             return View();
-         }
+         // [HttpGet("Register")]
+         // public IActionResult Register()
+         // {           
+         //     ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+         //     ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
+         //     return View();
+         // }
         
-         [HttpPost("Register")]
-         //[ValidateAntiForgeryToken]
-         public IActionResult Register(UsersDTO newUser)
-         {
-             byte[] passwordHash, passwordSalt;
-             CreatePasswordHash(newUser.Password, out passwordHash, out passwordSalt);
-             Users user = new Users
-             { 
-                 Firstname = newUser.Firstname,
-                 Lastname = newUser.Lastname,
-                 Email = newUser.Email,
-                 Cellphone = newUser.Cellphone,
-                 LandlinePhone = newUser.LandlinePhone,
-                 Services = newUser.Services,
-                 Sites = newUser.Sites,
-                 Password = newUser.Password,
-                 IsAdmin = newUser.IsAdmin
-             };
-             Services? findService = _context.Services.FirstOrDefault(x => x.Id == newUser.Services.Id);
+        //  [HttpPost("Register")]
+        //  //[ValidateAntiForgeryToken]
+        //  public IActionResult Register(UsersDTO newUser)
+        //  {
+        //      Users user = new Users
+        //      { 
+        //          Firstname = newUser.Firstname,
+        //          Lastname = newUser.Lastname,
+        //          Email = newUser.Email,
+        //          Cellphone = newUser.Cellphone,
+        //          LandlinePhone = newUser.LandlinePhone,
+        //          Services = newUser.Services,
+        //          Sites = newUser.Sites,
+        //          Password = newUser.Password,
+        //          IsAdmin = newUser.IsAdmin
+        //      };
+        //      Services? findService = _context.Services.FirstOrDefault(x => x.Id == newUser.Services.Id);
+        //
+        //      if (findService == null)
+        //      {
+        //          return NotFound(new
+        //          {
+        //              Message = "Aucun service trouvé avec cet Id"
+        //          });
+        //      }
+        //      else
+        //      {
+        //          user.Services = findService;
+        //      }
+        //      Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == newUser.Sites.Id);
+        //
+        //      if (findSites == null)
+        //      {
+        //          return NotFound(new
+        //          {
+        //              Message = "Aucun site trouvé avec cet Id"
+        //          });
+        //      }
+        //      else
+        //      {
+        //          user.Sites = findSites;
+        //      }
+        //      _context.Users.Add(user); 
+        //      _context.SaveChanges(); 
+        //      return RedirectToAction("Index", "Users");
+        //  }
+        //
+        // [HttpGet("Login")]
+        //  public IActionResult Login()
+        //  {
+        //      return View();
+        //  }
+        //
+        //  [HttpPost("Login")]
+        //  [ValidateAntiForgeryToken]
+        //  public IActionResult Login(Users userDto)
+        //  {
+        //      if (ModelState.IsValid)
+        //      {
+        //          Users user = _context.Users.FirstOrDefault(u => u.Email == userDto.Email && u.Password == userDto.Password && u.IsAdmin == userDto.IsAdmin);
+        //          if (user != null) 
+        //          { 
+        //              return RedirectToAction("Index", "Users");
+        //          }
+        //      }
+        //      return View();
+        //  }
         
-             if (findService == null)
-             {
-                 return NotFound(new
-                 {
-                     Message = "Aucun service trouvé avec cet Id"
-                 });
-             }
-             else
-             {
-                 user.Services = findService;
-             }
-             Sites? findSites = _context.Sites.FirstOrDefault(x => x.Id == newUser.Sites.Id);
-        
-             if (findSites == null)
-             {
-                 return NotFound(new
-                 {
-                     Message = "Aucun site trouvé avec cet Id"
-                 });
-             }
-             else
-             {
-                 user.Sites = findSites;
-             }
-             _context.Users.Add(user); 
-             _context.SaveChanges(); 
-             return RedirectToAction("Index", "Users");
-         }
-        
-        [HttpGet("Login")]
-         public IActionResult Login()
-         {
-             return View();
-         }
-
-         [HttpPost("Login")]
-         [ValidateAntiForgeryToken]
-         public IActionResult Login(Users userDto)
-         {
-             if (ModelState.IsValid)
-             {
-                 Users user = _context.Users.FirstOrDefault(u => u.Email == userDto.Email && u.Password == userDto.Password && u.IsAdmin == userDto.IsAdmin);
-                 if (user != null) 
-                 { 
-                     return RedirectToAction("Index", "Users");
-                 }
-             }
-             return View();
-         }
-        
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             List<Users> list = _context.Users.Include(x => x.Services).Include(x => x.Sites).ToList();
+            ViewBag.Services = new SelectList(_context.Services.ToList(), "Id", "Name");
+            ViewBag.Sites = new SelectList(_context.Sites.ToList(), "Id", "City");
             return View(list);
         }
         
@@ -199,7 +199,7 @@ namespace Cube4solo.Controllers
             _context.Users.Add(addUser);
             if (_context.SaveChanges() > 0)
             {
-                List<Users> list = _context.Users.ToList();
+                List<Users> list = _context.Users.Include(x => x.Services).Include(x => x.Sites).ToList();
                 return View("Index", list);
             }
             else
@@ -211,7 +211,7 @@ namespace Cube4solo.Controllers
             }
         }
         
-        [HttpPatch("users")]
+        [HttpPost("users/edit")]
         public IActionResult EditUser(UsersDTO newInfos)
         {
             Users? findUser = _context.Users.FirstOrDefault(x => x.Id == newInfos.Id);
@@ -225,6 +225,7 @@ namespace Cube4solo.Controllers
                 findUser.LandlinePhone = newInfos.LandlinePhone;
                 findUser.Services = newInfos.Services;
                 findUser.Sites = newInfos.Sites;
+                findUser.IsAdmin = newInfos.IsAdmin;
 
                 Services? findService = _context.Services.FirstOrDefault(x => x.Id == newInfos.Services.Id);
 
@@ -257,7 +258,7 @@ namespace Cube4solo.Controllers
                 _context.Users.Update(findUser);
                 if (_context.SaveChanges() > 0)
                 {
-                    List<Users> list = _context.Users.ToList();
+                    List<Users> list = _context.Users.Include(x => x.Services).Include(x => x.Sites).ToList();
                     return View("Index", list);
                 }
                 else
@@ -291,7 +292,7 @@ namespace Cube4solo.Controllers
                 _context.Users.Remove(findUser);
                 if (_context.SaveChanges() > 0)
                 {
-                    List<Users> list = _context.Users.ToList();
+                    List<Users> list = _context.Users.Include(x => x.Services).Include(x => x.Sites).ToList();
                     return View("Index", list);
                 } else
                 {

@@ -6,7 +6,6 @@ namespace Cube4solo.Models
         public string Firstname { get; set; } = "";
         public string Lastname { get; set; } = "";
         public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
 
         public string Cellphone { get; set; } = "";
         public string LandlinePhone { get; set; } = "";
